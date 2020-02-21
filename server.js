@@ -176,11 +176,6 @@ io.on('connection', (socket) => {
 
   socket.broadcast.emit('new_user')
 
-  // socket.on('update_tick', (newTick) => {
-  //   tick = newTick
-  //   io.emit('update_tick', tick)
-  // })
-
   socket.on('update_grid', (newGrid) => {
     grid = newGrid
     io.emit('update_grid', grid)
