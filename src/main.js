@@ -8,7 +8,7 @@ import io from 'socket.io-client'
 let baseUrl = ''
 if (process.env.NODE_ENV === 'production') {
    baseUrl = 'https://blooming-beach-14889.herokuapp.com/'
-else {
+} else {
    baseUrl = 'http://localhost:4000/'
 }
 
