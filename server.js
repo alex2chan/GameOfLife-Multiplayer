@@ -1,6 +1,6 @@
 const express = require('express')
 var app = express()
-const port = 4000
+const port = process.env.PORT || 4000
 
 var history = require('connect-history-api-fallback')
 

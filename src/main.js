@@ -5,7 +5,14 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import io from 'socket.io-client'
 
-Vue.prototype.$socket = io.connect('http://localhost:4000')
+let baseUrl = ''
+if (process.env.NODE_ENV === 'production') {
+   baseUrl = 'https://blooming-beach-14889.herokuapp.com/'
+else {
+   baseUrl = 'http://localhost:4000/'
+}
+
+Vue.prototype.$socket = io.connect(baseUrl)
 
 // Install BootstrapVue
 Vue.use(BootstrapVue)
