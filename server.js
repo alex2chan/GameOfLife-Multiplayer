@@ -4,18 +4,18 @@ const port = process.env.PORT || 4000
 
 var history = require('connect-history-api-fallback')
 
-const staticFileMiddleware = express.static('dist');
+const staticFileMiddleware = express.static('dist')
 
 // 1st call for unredirected requests
-app.use(staticFileMiddleware);
+app.use(staticFileMiddleware)
 
 // Support history api
 app.use(history({
   index: '/dist/index.html'
-}));
+}))
 
 // 2nd call for redirected requests
-app.use(staticFileMiddleware);
+app.use(staticFileMiddleware)
 
 const server = app.listen(`${port}`, function () {
   console.log(`Server started on port ${port}`)

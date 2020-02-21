@@ -7,9 +7,9 @@ import io from 'socket.io-client'
 
 let baseUrl = ''
 if (process.env.NODE_ENV === 'production') {
-   baseUrl = 'https://blooming-beach-14889.herokuapp.com/'
+  baseUrl = 'https://blooming-beach-14889.herokuapp.com/'
 } else {
-   baseUrl = 'http://localhost:4000/'
+  baseUrl = 'http://localhost:4000/'
 }
 
 Vue.prototype.$socket = io.connect(baseUrl)

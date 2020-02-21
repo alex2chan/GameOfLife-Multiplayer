@@ -1,15 +1,15 @@
-import Vue from "vue"
-import VueRouter from "vue-router"
-import GameOfLife from "./components/GameOfLife.vue"
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+import GameOfLife from './components/GameOfLife.vue'
 
 Vue.use(VueRouter)
 
 export default new VueRouter({
-  mode: "history",
+  mode: 'history',
   routes: [
     {
-      path: "/",
-      name: "GameOfLife",
+      path: '/',
+      name: 'GameOfLife',
       component: GameOfLife
     }
   ]
