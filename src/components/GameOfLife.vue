@@ -67,6 +67,7 @@ export default {
     }
   },
   created () {
+    // All socket listeners to all events are here
     this.$socket.on('create_users', (data) => {
       this.users = data
       var user = this.users.find(x => x.id === this.$socket.id)
@@ -106,22 +107,28 @@ export default {
     })
   },
   methods: {
+    // Random Number Generator for preset location (recursive)
     rng (rowLimit, columnLimit, oscillators) {
       this.rngCounter += 1
 
+      // The forbidden locations to put a preset based on its rectangular size
+      // These locations are for the top left cell of each preset
       var forbidden = []
 
+      // Forbidden locations for columns on the right, since each preset is based on the top left cell
       for (var i = 1; i < columnLimit; i++) {
         for (var j = 0; j < this.rows - rowLimit + 1; j++) {
           forbidden.push(this.columns - i + (this.columns * j))
         }
       }
 
+      // Forbidden locations for rows
       var rowNum = (this.rows - rowLimit + 1) * this.columns
       for (rowNum; rowNum < this.rows * this.columns; rowNum++) {
         forbidden.push(rowNum)
       }
 
+      // Limiting the randomness of the number by the unchecked cells
       var uncheckedCells = this.grid.filter(x => x.checked === false)
       var uncheckedNums = []
 
@@ -133,6 +140,7 @@ export default {
 
       var randomNumber = uncheckedNums[Math.floor((Math.random() * (uncheckedNums.length - 1)) + 0)]
 
+      // The hardcoded presets, which are based on the top left cell.
       var farray = []
 
       switch (oscillators) {
@@ -147,20 +155,32 @@ export default {
           break
       }
 
+      // The checked cells that each preset must not be in
       var checkedCells = this.grid.filter(x => x.checked === true)
       var checkedNums = []
       for (var k of checkedCells) {
         checkedNums.push(k.value)
       }
 
+      /*
+        If the count exceeds the number of cells in the grid, return an empty array
+        It does not have to be the number of cells in the grid,
+        but I figured it would be plenty enough for it to find a suitable location for the preset
+      */
       if (this.rngCounter >= this.rows * this.columns) {
         this.rngCounter = 0
+
         this.$bvToast.toast('There is no space left for ' + oscillators, {
           title: 'Warning!',
           variant: 'danger'
         })
+
         return []
       } else {
+        /*
+          If the top left cell of a preset is in a forbidden location or
+          if the preset lands on a checked cell then call this function again
+        */
         if (forbidden.includes(farray[0]) || farray.some(x => checkedNums.includes(x))) {
           farray = this.rng(rowLimit, columnLimit, oscillators)
         }
@@ -168,9 +188,10 @@ export default {
 
       return farray
     },
+    // The preset function. Each preset is placed according to the top-left cell
     presets (oscillators) {
       switch (oscillators) {
-        // 1 x 3 blocks
+        // The rectangular size of a blinker is 1 x 3 blocks
         case 'blinkers':
           var blinkerArray = this.rng(1, 3, 'blinkers')
           for (var i of blinkerArray) {
@@ -178,7 +199,8 @@ export default {
           }
           this.$socket.emit('update_grid', this.grid)
           break
-        // 2 x 4 blocks
+
+        // The rectangular size of a toad is 2 x 4 blocks
         case 'toad':
           var toadArray = this.rng(2, 4, 'toad')
           for (var j of toadArray) {
@@ -186,7 +208,8 @@ export default {
           }
           this.$socket.emit('update_grid', this.grid)
           break
-        // 4 x 4 blocks
+
+        // The rectangular size of a beacon is 4 x 4 blocks
         case 'beacon':
           var beaconArray = this.rng(4, 4, 'beacon')
           for (var k of beaconArray) {
@@ -198,6 +221,7 @@ export default {
     }
   },
   computed: {
+    // Dynamic CSS changes based on a random color given for each client
     gridStyle () {
       return {
         '--width': (this.columns * this.boxSize).toString() + 'px',
