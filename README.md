@@ -11,6 +11,8 @@ More information can be found here: https://en.wikipedia.org/wiki/Conway%27s_Gam
 
 Deployed on Heroku at: https://blooming-beach-14889.herokuapp.com/
 
+TODOs: More advanced testing with Mocha
+
 ## Project setup
 Clone the git repository and cd into the project folder then execute `npm install`
 If you do not have npm yet, please install node here: https://nodejs.org/en/download/
